@@ -21,10 +21,11 @@ NBDBT_DEBUG = False
 from fastcore.all import patch
 
 # Internal Cell
-from dbt.adapters.factory import adapter_management
-from dbt.parser import parse_args
-from dbt.task.compile import CompileTask
-from dbt.contracts.results import RunExecutionResult
+# from dbt.adapters.factory import adapter_management
+# from dbt.parser import parse_args
+# from dbt.task.compile import CompileTask
+# from dbt.contracts.results import RunExecutionResult
+from dbt.cli.main import dbtRunner, dbtRunnerResult
 import dbt.flags
 import dbt.tracking
 
@@ -179,7 +180,7 @@ def config_dbt(line):
     if IN_NBDBT_TEST:
         return None
     try:
-        from dbt.main import parse_args
+        from dbt.cli.main import dbtRunner
     except ImportError:
         return "'dbt-core' not installed. Did you run 'pip install dbt-core'?"
     line_args = magic_arguments.parse_argstring(config_dbt, line)
@@ -281,13 +282,17 @@ def _write_sql(self: DbtMagicObject) -> None:
 @patch
 def _compile_model(self: DbtMagicObject) -> None:
     """Compile model and store compile result"""
-    parsed = parse_args(
-        ["compile", "--select", self.file, "--project-dir", str(self.project_dir)]
-    )
-    with adapter_management():
-        task = CompileTask.from_args(args=parsed)
-        compile_result = task.run()
-        self._compiled_path = compile_result.results[0].node.compiled_path
+    # parsed = parse_args(
+    #     ["compile", "--select", self.file, "--project-dir", str(self.project_dir)]
+    # )
+    # with adapter_management():
+    #     task = CompileTask.from_args(args=parsed)
+    #     compile_result = task.run()
+    #     self._compiled_path = compile_result.results[0].node.compiled_path
+    cli_args = ["compile", "--select", self.file, "--project-dir", str(self.project_dir)]
+    dbt = dbtRunner()
+    res: dbtRunnerResult = dbt.invoke(cli_args)
+    self._compiled_path = res.result.nodes[0].compiled_path
 
 # Cell
 @patch
