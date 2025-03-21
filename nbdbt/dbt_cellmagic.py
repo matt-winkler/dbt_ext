@@ -21,7 +21,8 @@ NBDBT_DEBUG = False
 from fastcore.all import patch
 
 # Internal Cell
-from dbt.cli.main import parse_args, adapter_management
+from dbt.adapters.factory import adapter_management
+from dbt.parser import parse_args
 from dbt.task.compile import CompileTask
 from dbt.contracts.results import RunExecutionResult
 import dbt.flags
