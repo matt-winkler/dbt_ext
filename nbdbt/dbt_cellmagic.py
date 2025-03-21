@@ -13,11 +13,14 @@ from typing import Union, List, Dict, Optional
 import os
 import shutil
 
+import dbt.cli.flags
+
 # Internal Cell
 IN_NBDBT_TEST = os.environ.get("IN_NBDBT_TEST", "False").lower() == "true"
 NBDBT_DEBUG = False
 
 # Internal Cell
+import dbt.cli
 from fastcore.all import patch
 
 # Internal Cell
@@ -31,9 +34,10 @@ import dbt.tracking
 
 # Internal Cell
 #dbt.tracking.active_user = dbt.tracking.User(None)
-dbt.flags.INDIRECT_SELECTION = "eager"
-dbt.flags.WRITE_JSON = True
-dbt.flags.QUIET = True  # silent
+dbt.cli.flags.INDIRECT_SELECTION = "eager"
+dbt.cli.flags.WRITE_JSON = True
+dbt.cli.flags.QUIET = True  # silent
+
 
 # Internal Cell
 
