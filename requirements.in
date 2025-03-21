@@ -1,6 +1,3 @@
 dbt-core
-dbt-postgres
 dbt-snowflake
-dbt-redshift
-dbt-bigquery
 fal

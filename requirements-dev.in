@@ -2,4 +2,7 @@ nbdev
 jupyterlab
 jupyterlab-vim
 nbdime
-nb-black
+ipykernel
+fal
+dbt-snowflake
+git+https://github.com/matt-winkler/dbt_ext.git@dev

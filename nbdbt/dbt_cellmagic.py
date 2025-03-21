@@ -3,7 +3,6 @@
 __all__ = ['nbdbt_config', 'clear_cache', 'config_dbt', 'DbtMagicObject', 'schema', 'write_dbt']
 
 # Internal Cell
-
 import IPython
 from IPython.core import magic_arguments
 from IPython.core.magic import register_cell_magic, register_line_magic
@@ -22,7 +21,7 @@ NBDBT_DEBUG = False
 from fastcore.all import patch
 
 # Internal Cell
-from dbt.main import parse_args, adapter_management
+#from dbt.main import parse_args, adapter_management
 from dbt.task.compile import CompileTask
 from dbt.contracts.results import RunExecutionResult
 import dbt.flags
