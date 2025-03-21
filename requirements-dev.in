@@ -3,6 +3,6 @@ jupyterlab
 jupyterlab-vim
 nbdime
 ipykernel
-fal-dbt
+dbt-fal
 dbt-snowflake
 git+https://github.com/matt-winkler/dbt_ext.git@dev

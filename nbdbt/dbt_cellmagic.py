@@ -30,7 +30,7 @@ import dbt.flags
 import dbt.tracking
 
 # Internal Cell
-dbt.tracking.active_user = dbt.tracking.User(None)
+#dbt.tracking.active_user = dbt.tracking.User(None)
 dbt.flags.INDIRECT_SELECTION = "eager"
 dbt.flags.WRITE_JSON = True
 dbt.flags.QUIET = True  # silent
@@ -41,7 +41,6 @@ from fal import FalDbt
 import faldbt.lib as fallib
 
 # Internal Cell
-
 import pandas as pd
 
 # Cell
