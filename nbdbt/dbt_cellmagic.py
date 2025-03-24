@@ -34,15 +34,15 @@ import dbt.tracking
 
 # Internal Cell
 #dbt.tracking.active_user = dbt.tracking.User(None)
-dbt.cli.flags.INDIRECT_SELECTION = "eager"
-dbt.cli.flags.WRITE_JSON = True
-dbt.cli.flags.QUIET = True  # silent
+#dbt.cli.flags.INDIRECT_SELECTION = "eager"
+#dbt.cli.flags.WRITE_JSON = True
+#dbt.cli.flags.QUIET = True  # silent
 
 
 # Internal Cell
 
-from fal import FalDbt
-import faldbt.lib as fallib
+# from fal import FalDbt
+# import faldbt.lib as fallib
 
 # Internal Cell
 import pandas as pd
@@ -298,94 +298,94 @@ def _compile_model(self: DbtMagicObject) -> None:
     self._compiled_path = res.result.nodes[0].compiled_path
 
 # Cell
-@patch
-def _exec_faldbt_ref(self: DbtMagicObject, limit) -> None:
-    """Execute sql and return df"""
-    if self._compiled_sql is None:
-        raise ValueError("Model compilation step has not been executed")
+# @patch
+# def _exec_faldbt_ref(self: DbtMagicObject, limit) -> None:
+#     """Execute sql and return df"""
+#     if self._compiled_sql is None:
+#         raise ValueError("Model compilation step has not been executed")
 
-    faldbt = FalDbt(
-        profiles_dir=str(self.profile_dir), project_dir=str(self.project_dir)
-    )
-    profile_target = faldbt._profile_target
-    # adapter_response, result
-    limit = self.limit if limit == -1 else limit
-    if limit is None:
-        exec_sql = self._compiled_sql
-    else:
-        ctx_name = "xxx_yyy_zzz"
-        exec_sql = f"""with {ctx_name} as
-        (
-          {self._compiled_sql}
-        )
-        select * from {ctx_name}
-        limit {limit}
-        """
+#     faldbt = FalDbt(
+#         profiles_dir=str(self.profile_dir), project_dir=str(self.project_dir)
+#     )
+#     profile_target = faldbt._profile_target
+#     # adapter_response, result
+#     limit = self.limit if limit == -1 else limit
+#     if limit is None:
+#         exec_sql = self._compiled_sql
+#     else:
+#         ctx_name = "xxx_yyy_zzz"
+#         exec_sql = f"""with {ctx_name} as
+#         (
+#           {self._compiled_sql}
+#         )
+#         select * from {ctx_name}
+#         limit {limit}
+#         """
 
-    _, result = fallib._execute_sql(
-        str(self.project_dir), str(self.profile_dir), exec_sql, profile_target
-    )
-    df_result = result
-    self._df_result = df_result
+#     _, result = fallib._execute_sql(
+#         str(self.project_dir), str(self.profile_dir), exec_sql, profile_target
+#     )
+#     df_result = result
+#     self._df_result = df_result
 
 # Cell
-@patch
-def ref(self: DbtMagicObject, limit=-1) -> pd.DataFrame:
-    self._exec_faldbt_ref(limit)
-    return self._df_result
+# @patch
+# def ref(self: DbtMagicObject, limit=-1) -> pd.DataFrame:
+#     self._exec_faldbt_ref(limit)
+#     return self._df_result
 
 # Internal Cell
-from faldbt.project import _DbtTestableNode
+#from faldbt.project import _DbtTestableNode
 
 # Cell
 
-@patch(as_prop=True)
-def schema(self: _DbtTestableNode) -> pd.DataFrame:
-    profiles_dir = nbdbt_config["profiles_dir"]
-    project_dir = self.node.root_path
-    faldbt = FalDbt(profiles_dir=profiles_dir, project_dir=project_dir)
-    profile_target = faldbt._profile_target
+# @patch(as_prop=True)
+# def schema(self: _DbtTestableNode) -> pd.DataFrame:
+#     profiles_dir = nbdbt_config["profiles_dir"]
+#     project_dir = self.node.root_path
+#     faldbt = FalDbt(profiles_dir=profiles_dir, project_dir=project_dir)
+#     profile_target = faldbt._profile_target
 
-    node = self.node
+#     node = self.node
 
-    adapter = fallib._get_adapter(
-        faldbt.project_dir, faldbt.profiles_dir, profile_target
-    )
+#     adapter = fallib._get_adapter(
+#         faldbt.project_dir, faldbt.profiles_dir, profile_target
+#     )
 
-    # adapter.type() == 'bigquery'
-    if adapter.type() != "bigquery":
-        raise NotImplementError("No support yet for any other adapter except BigQuery")
-        return None
+#     # adapter.type() == 'bigquery'
+#     if adapter.type() != "bigquery":
+#         raise NotImplementError("No support yet for any other adapter except BigQuery")
+#         return None
 
-    relation = fallib._get_target_relation(
-        node,
-        faldbt.project_dir,
-        faldbt.profiles_dir,
-        profile_target=faldbt._profile_target,
-    )
+#     relation = fallib._get_target_relation(
+#         node,
+#         faldbt.project_dir,
+#         faldbt.profiles_dir,
+#         profile_target=faldbt._profile_target,
+#     )
 
-    info_schema = relation.information_schema()
+#     info_schema = relation.information_schema()
 
-    column_schema = info_schema.from_relation(relation, "COLUMNS")
+#     column_schema = info_schema.from_relation(relation, "COLUMNS")
 
-    column_table = column_schema.render()
+#     column_table = column_schema.render()
 
-    table_name = relation.table
+#     table_name = relation.table
 
-    fetch_schema_sql = f"""
-    with schema_columns as
-    ( select *
-    from {column_table}
-    where table_name = '{table_name}'
-    )
-    select *
-    from schema_columns
-    """
+#     fetch_schema_sql = f"""
+#     with schema_columns as
+#     ( select *
+#     from {column_table}
+#     where table_name = '{table_name}'
+#     )
+#     select *
+#     from schema_columns
+#     """
 
-    _, result = fallib._execute_sql(
-        project_dir, profiles_dir, fetch_schema_sql, faldbt._profile_target
-    )
-    return result
+#     _, result = fallib._execute_sql(
+#         project_dir, profiles_dir, fetch_schema_sql, faldbt._profile_target
+#     )
+#     return result
 
 # Cell
 @magic_arguments.magic_arguments()
