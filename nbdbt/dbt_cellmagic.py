@@ -427,7 +427,7 @@ def write_dbt(line, cell):
     if IN_NBDBT_TEST:
         return None
     try:
-        from dbt.main import parse_args
+        from dbt.cli.main import dbtRunner
     except ImportError:
         return "'dbt-core' not installed. Did you run 'pip install dbt-core'?"
     line_args = magic_arguments.parse_argstring(write_dbt, line)
