@@ -293,7 +293,6 @@ def _compile_model(self: DbtMagicObject) -> None:
     dbt = dbtRunner()
     res: dbtRunnerResult = dbt.invoke(cli_args)
     self._compiled_path = res.result[0]
-    print(self._compiled_path)
 
 # Cell
 # @patch
