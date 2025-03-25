@@ -1,8 +1,9 @@
 nbdev
 jupyterlab
-jupyterlab-vim
 nbdime
 ipykernel
-dbt-fal
 dbt-snowflake
 git+https://github.com/matt-winkler/dbt_ext.git@dev
+pandas
+numpy==1.26.4
+pyarrow<19.0.0

@@ -13,14 +13,11 @@ from typing import Union, List, Dict, Optional
 import os
 import shutil
 
-import dbt.cli.flags
-
 # Internal Cell
 IN_NBDBT_TEST = os.environ.get("IN_NBDBT_TEST", "False").lower() == "true"
 NBDBT_DEBUG = False
 
 # Internal Cell
-import dbt.cli
 from fastcore.all import patch
 
 # Internal Cell
@@ -295,7 +292,8 @@ def _compile_model(self: DbtMagicObject) -> None:
     cli_args = ["compile", "--select", self.file, "--project-dir", str(self.project_dir)]
     dbt = dbtRunner()
     res: dbtRunnerResult = dbt.invoke(cli_args)
-    self._compiled_path = res.result.nodes[0].compiled_path
+    self._compiled_path = res.result[0]
+    print(self._compiled_path)
 
 # Cell
 # @patch
