@@ -2,8 +2,9 @@ nbdev
 jupyterlab
 nbdime
 ipykernel
+ipywidgets
 dbt-snowflake
-git+https://github.com/matt-winkler/dbt_ext.git@dev
+git+https://github.com/matt-winkler/dbt_ext.git@dev#egg=nbdbt
 pandas
 numpy==1.26.4
 pyarrow<19.0.0

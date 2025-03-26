@@ -415,7 +415,8 @@ def _compile_model(self: DbtMagicObject) -> None:
     help=("sql limit default"),
 )
 @magic_arguments.argument(
-    "file",
+    "-s",
+    "--save_path",
     type=str,
     help=("file path to write to"),
 )
@@ -429,27 +430,28 @@ def write_dbt(line, cell):
         return "'dbt-core' not installed. Did you run 'pip install dbt-core'?"
     line_args = magic_arguments.parse_argstring(write_dbt, line)
     dmo = DbtMagicObject(
-        cell, line_args.file, line_args.limit, line_args.project, line_args.notebook
+        cell, line_args.save_path, line_args.limit, line_args.project, line_args.notebook
     )
-    cache = load_cache(line_args.file)
-    if cache is None:
-        dmo._write_sql()
-        dmo._compile_model()
-        update_cache(dmo)
-    else:
-        check_results = check_cache(dmo, cache)
-        if "update_sql" in check_results:
-            dmo._write_sql()
-            dmo._compile_model()
-        elif "update_model" in check_results:
-            dmo._compile_model()
-        if len(check_results) > 0:
-            update_cache(dmo)
-        else:
-            update_dmo(dmo, cache)
+    dmo._write_sql()
+    # cache = load_cache(line_args.file)
+    # if cache is None:
+    #     dmo._write_sql()
+    #     dmo._compile_model()
+    #     update_cache(dmo)
+    # else:
+    #     check_results = check_cache(dmo, cache)
+    #     if "update_sql" in check_results:
+    #         dmo._write_sql()
+    #         dmo._compile_model()
+    #     elif "update_model" in check_results:
+    #         dmo._compile_model()
+    #     if len(check_results) > 0:
+    #         update_cache(dmo)
+    #     else:
+    #         update_dmo(dmo, cache)
 
     if line_args.assign:
         IPython.get_ipython().push({line_args.assign: dmo})
         return None
-    results = dmo.ref()
-    return results
+    #results = dmo.ref()
+    return f"saved to file {line_args.save_path}"
